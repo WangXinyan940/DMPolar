@@ -59,7 +59,7 @@ def check_gdma_installation():
         gdma_multipoles = read_gdma_result(gdma_out)
         return gdma_multipoles
     
-def compute_gdma(rdmol: Chem.Mol, pos=None, folder=None, method="hf/cc-pvdz", return_wfn=False):
+def compute_wfn(rdmol: Chem.Mol, pos=None, folder=None, method="hf/cc-pvdz"):
     charge = Chem.GetFormalCharge(rdmol)
     density = "SCF"
     if "mp2" in method.split("/")[0].lower() or "cc" in method.split("/")[0].lower():
@@ -81,34 +81,4 @@ def compute_gdma(rdmol: Chem.Mol, pos=None, folder=None, method="hf/cc-pvdz", re
     geom = "\n".join(geom)
     mol = psi4.geometry(geom)
     energy, wfn = psi4.energy(method, molecule=mol, return_wfn=True)
-    psi4.fchk(wfn, f"{dirname}/dma.fchk")
-    with open(f"{dirname}/gdma.inp", "w") as f:
-        f.write(f"""Title dmpolar gdma
-File {dirname}/dma.fchk density {density}
-Angstrom
-AU
-Multipoles
-Switch 4
-Limit 2
-Limit 1 H  
-Radius H 0.325
-Radius C 0.65
-Radius N 0.65
-Radius O 0.65
-Radius F 0.65
-Radius Cl 1.0
-Radius Br 1.05
-Radius I 1.1
-Radius S 0.9
-Radius P 0.9
-
-Start
-Finish""")
-    psi4.gdma(wfn, datafile=f"{dirname}/gdma.inp")
-    gdma_out = psi4.variable('DMA DISTRIBUTED MULTIPOLES').to_array()
-    gdma_multipoles = read_gdma_result(gdma_out)
-    if folder is None:
-        dirname.cleanup()
-    if return_wfn:
-        return gdma_multipoles, wfn
-    return gdma_multipoles
+    return wfn
