@@ -28,10 +28,12 @@ def read_gdma_result(gdma_matrix):
         ret.append(convert_harmonic_to_cartesian(multipole))
     return ret
 
+
 def compute_gdma(wfn):
     out = psi4.gdma(wfn)
     gdma_mat = out.variable("DMA DISTRIBUTED MULTIPOLES").np
     return read_gdma_result(gdma_mat)
+
 
 def check_psi4_installation():
     with TemporaryDirectory() as dirname:
@@ -46,7 +48,7 @@ def check_psi4_installation():
         energy = psi4.energy('scf/cc-pvdz', molecule=h2o)
         return energy
 
-    
+
 def compute_wfn(rdmol: Chem.Mol, pos=None, folder=None, method="hf/cc-pvdz"):
     charge = Chem.GetFormalCharge(rdmol)
     density = "SCF"
@@ -62,7 +64,8 @@ def compute_wfn(rdmol: Chem.Mol, pos=None, folder=None, method="hf/cc-pvdz"):
     for atom in rdmol.GetAtoms():
         if pos is None:
             pos = rdmol.GetConformer().GetPositions() * 0.1
-        geom.append(f"{atom.GetSymbol()} {pos[atom.GetIdx()][0]} {pos[atom.GetIdx()][1]} {pos[atom.GetIdx()][2]}")
+        geom.append(
+            f"{atom.GetSymbol()} {pos[atom.GetIdx()][0]} {pos[atom.GetIdx()][1]} {pos[atom.GetIdx()][2]}")
     geom.append("units angstrom")
     geom.append("noreorient")
     geom.append("nocom")
@@ -70,6 +73,7 @@ def compute_wfn(rdmol: Chem.Mol, pos=None, folder=None, method="hf/cc-pvdz"):
     mol = psi4.geometry(geom)
     energy, wfn = psi4.energy(method, molecule=mol, return_wfn=True)
     return wfn
+
 
 def compute_esp(wfn, points):
     with open("grid.dat", "w") as f:

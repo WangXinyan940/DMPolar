@@ -10,3 +10,4 @@ def run_command(command: str, **kwargs) -> subprocess.CompletedProcess:
 def generate_points(rdmol: Chem.rdmol.Mol, method: str = "CHLEGP"):
     anums = [atom.GetAtomicNum() for atom in rdmol.GetAtoms()]
     coords = rdmol.GetConformer().GetPositions() # coordinates in angstrom
+    
