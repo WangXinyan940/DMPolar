@@ -1,0 +1,8 @@
+[project]
+name = "dmpolar"
+version = "0.0.1"
+description = "Deep learning for atomic multipole optimization."
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"

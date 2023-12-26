@@ -7,9 +7,9 @@ Differentiable molecular polarizable force field builder based on DMFF. Can auto
 
 DMFF is a python package. Please follow the instructions in [DMFF](https://github.com/deepmodeling/DMFF).
 
-### Install RDKit
+### Install requirements
 ```bash
-conda install -c rdkit rdkit
+mamba create -n dmpolar python=3.10 psi4 gdma pygdma openmm rdkit scipy numba xtb-python crest -c conda-forge
 ```
 
 ### Install DMPolar

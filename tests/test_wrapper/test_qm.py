@@ -8,6 +8,7 @@ def test_psi4_check():
     psi4.set_memory('2000 MB')
     psi4.set_num_threads(os.cpu_count())
     energy = check_psi4_installation()
+    psi4.core.clean()
     np.testing.assert_allclose(energy, -76.0266327350922779, atol=1e-4)
 
 def test_gdma_check():
@@ -16,6 +17,7 @@ def test_gdma_check():
     psi4.set_num_threads(os.cpu_count())
     gdma = check_gdma_installation()
     print(gdma)
+    psi4.core.clean()
     assert len(gdma) == 3
 
 def test_compute_gdma():
@@ -24,6 +26,6 @@ def test_compute_gdma():
     import psi4
     psi4.set_memory('2000 MB')
     psi4.set_num_threads(os.cpu_count())
-
     gdma = compute_gdma(rdmol, folder="tests/data/out/mol1")
+    psi4.core.clean()
     print(gdma)
